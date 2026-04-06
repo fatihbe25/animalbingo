@@ -1,484 +1,47 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🐾 Animal Bingo</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --red: #c0392b;
-    --red-light: #e74c3c;
-    --cream: #fdf6ec;
-    --green: #27ae60;
-    --gold: #f39c12;
-    --dark: #2c1810;
-    --card-bg: #fff;
-    --shadow: 0 8px 32px rgba(192,57,43,0.13);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--cream);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Decorative background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse at 10% 10%, rgba(192,57,43,0.07) 0%, transparent 50%),
-      radial-gradient(ellipse at 90% 90%, rgba(243,156,18,0.07) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  header {
-    text-align: center;
-    padding: 28px 20px 14px;
-    position: relative;
-    z-index: 1;
-  }
-
-  header h1 {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    color: var(--red);
-    text-shadow: 3px 3px 0 rgba(192,57,43,0.15);
-    letter-spacing: 1px;
-  }
-
-  header p {
-    color: #7a5c4a;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 4px;
-  }
-
-  /* ── SCREENS ── */
-  #start-screen, #game-screen, #end-screen {
-    position: relative;
-    z-index: 1;
-    display: none;
-    animation: fadeIn .4s ease;
-  }
-  #start-screen { display: block; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── START ── */
-  #start-screen {
-    max-width: 540px;
-    margin: 0 auto;
-    padding: 30px 20px 60px;
-    text-align: center;
-  }
-
-  .start-animals {
-    font-size: 3.5rem;
-    margin: 20px 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px;
-    line-height: 1;
-  }
-
-  .start-animals span { 
-    display: inline-block;
-    animation: bounce 1.5s infinite;
-  }
-  .start-animals span:nth-child(2n) { animation-delay: .2s; }
-  .start-animals span:nth-child(3n) { animation-delay: .4s; }
-  .start-animals span:nth-child(4n) { animation-delay: .6s; }
-
-  @keyframes bounce {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-
-  .start-info {
-    background: white;
-    border-radius: 20px;
-    padding: 22px 24px;
-    margin: 22px 0;
-    text-align: left;
-    border: 2px solid rgba(192,57,43,0.1);
-    box-shadow: var(--shadow);
-  }
-
-  .start-info h3 {
-    font-family: 'Fredoka One', cursive;
-    color: var(--red);
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-
-  .start-info li {
-    color: #5a4030;
-    font-size: 0.92rem;
-    font-weight: 600;
-    margin-left: 18px;
-    margin-bottom: 6px;
-    line-height: 1.5;
-  }
-
-  .btn-start {
-    background: var(--red);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.5rem;
-    padding: 16px 52px;
-    cursor: pointer;
-    box-shadow: 0 6px 0 #8b1a12, 0 8px 24px rgba(192,57,43,0.3);
-    transition: transform .1s, box-shadow .1s;
-    letter-spacing: 1px;
-  }
-
-  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #8b1a12, 0 12px 28px rgba(192,57,43,0.35); }
-  .btn-start:active { transform: translateY(3px); box-shadow: 0 3px 0 #8b1a12; }
-
-  /* ── GAME SCREEN ── */
-  #game-screen {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 16px 60px;
-  }
-
-  /* Progress bar */
-  .progress-bar-wrap {
-    background: rgba(192,57,43,0.1);
-    border-radius: 50px;
-    height: 12px;
-    margin: 10px 0 20px;
-    overflow: hidden;
-  }
-
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--red-light), var(--gold));
-    border-radius: 50px;
-    transition: width .6s ease;
-    width: 0%;
-  }
-
-  .progress-label {
-    text-align: center;
-    font-weight: 800;
-    color: #7a5c4a;
-    font-size: 0.88rem;
-    margin-top: -16px;
-    margin-bottom: 10px;
-  }
-
-  /* Current animal spotlight */
-  #spotlight {
-    background: white;
-    border-radius: 24px;
-    padding: 28px 24px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    border: 3px solid var(--red);
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  #spotlight::before {
-    content: '';
-    position: absolute;
-    top: -30px; right: -30px;
-    width: 120px; height: 120px;
-    background: radial-gradient(circle, rgba(192,57,43,0.08), transparent 70%);
-    border-radius: 50%;
-  }
-
-  #spotlight-label {
-    font-family: 'Fredoka One', cursive;
-    color: var(--red);
-    font-size: 0.9rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  
- 
-
-  #spotlight-emoji {
-    font-size: 5rem;
-    line-height: 1;
-    display: block;
-    margin: 0 auto 12px;
-    animation: popIn .4s cubic-bezier(.34,1.56,.64,1);
-  }
-
-  @keyframes popIn {
-    from { transform: scale(0.5) rotate(-10deg); opacity: 0; }
-    to   { transform: scale(1) rotate(0deg); opacity: 1; }
-  }
-
-  #spotlight-name {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(1.8rem, 5vw, 2.6rem);
-    color: var(--dark);
-    margin-bottom: 6px;
-  }
-
-  #spotlight-name-tr {
-    font-size: 1.1rem;
-    color: #9a7a6a;
-    font-weight: 700;
-    margin-bottom: 22px;
-  }
-
-  .spotlight-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .btn-sound {
-    background: var(--gold);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1rem;
-    padding: 12px 28px;
-    cursor: pointer;
-    box-shadow: 0 4px 0 #c87d00;
-    transition: transform .1s, box-shadow .1s;
-  }
-  .btn-sound:hover { transform: translateY(-1px); }
-  .btn-sound:active { transform: translateY(2px); box-shadow: 0 2px 0 #c87d00; }
-
-  .btn-ok {
-    background: var(--green);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1rem;
-    padding: 12px 28px;
-    cursor: pointer;
-    box-shadow: 0 4px 0 #1a7a42;
-    transition: transform .1s, box-shadow .1s;
-  }
-  .btn-ok:hover { transform: translateY(-1px); }
-  .btn-ok:active { transform: translateY(2px); box-shadow: 0 2px 0 #1a7a42; }
-
-  /* Caller Card Grid */
-  .section-title {
-    font-family: 'Fredoka One', cursive;
-    color: var(--red);
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-    letter-spacing: .5px;
-  }
-
-  #caller-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    background: white;
-    border-radius: 20px;
-    padding: 16px;
-    box-shadow: var(--shadow);
-    border: 2px solid rgba(192,57,43,0.1);
-  }
-
-  .caller-cell {
-    aspect-ratio: 1;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: clamp(1.4rem, 4vw, 2rem);
-    border: 2px solid #eeddd5;
-    background: var(--cream);
-    transition: all .3s ease;
-    position: relative;
-    cursor: default;
-  }
-
-
-  /* Resimlerin kare ve düzgün durması için */
-.animal-img {
-    width: 120px;
-    height: 120px;
-    object-fit: contain; /* Resmi bozmadan sığdırır */
-    border-radius: 12px;
-    margin-bottom: 10px;
-}
-
-.caller-cell img {
-    width: 80%;
-    height: 60%;
-    object-fit: contain;
-}
-
-
-
-  .caller-cell .num {
-    position: absolute;
-    top: 3px;
-    left: 5px;
-    font-size: 0.6rem;
-    color: #b09080;
-    font-weight: 800;
-  }
-
-  .caller-cell .cell-name {
-    font-size: 0.5rem;
-    font-weight: 800;
-    color: #c09080;
-    margin-top: 2px;
-    text-align: center;
-    line-height: 1.1;
-  }
-
-  .caller-cell.called {
-    background: var(--red);
-    border-color: var(--red);
-  }
-
-  .caller-cell.called .num,
-  .caller-cell.called .cell-name { color: rgba(255,255,255,0.7); }
-
-  .caller-cell.current {
-    background: var(--gold);
-    border-color: var(--gold);
-    transform: scale(1.08);
-    box-shadow: 0 4px 16px rgba(243,156,18,0.4);
-    z-index: 2;
-  }
-
-  .caller-cell.current .num,
-  .caller-cell.current .cell-name { color: rgba(255,255,255,0.85); }
-
-  /* Waiting state */
-  #waiting-state {
-    text-align: center;
-    padding: 30px;
-    color: #9a7a6a;
-  }
-
-  #waiting-state .big { font-size: 3rem; }
-  #waiting-state p { font-weight: 700; font-size: 1.1rem; margin-top: 10px; }
-
-  /* END SCREEN */
-  #end-screen {
-    max-width: 540px;
-    margin: 0 auto;
-    padding: 40px 20px 80px;
-    text-align: center;
-  }
-
-  .end-confetti { font-size: 4rem; margin-bottom: 16px; }
-
-  #end-screen h2 {
-    font-family: 'Fredoka One', cursive;
-    color: var(--red);
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-  }
-
-  #end-screen p {
-    color: #7a5c4a;
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-  }
-
-  .btn-restart {
-    background: var(--red);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.3rem;
-    padding: 14px 42px;
-    cursor: pointer;
-    box-shadow: 0 6px 0 #8b1a12;
-    transition: transform .1s, box-shadow .1s;
-  }
-
-  .btn-restart:hover { transform: translateY(-2px); }
-  .btn-restart:active { transform: translateY(3px); box-shadow: 0 2px 0 #8b1a12; }
-
-  /* Sound wave animation */
-  .sound-wave {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    vertical-align: middle;
-    margin-left: 6px;
-  }
-  .sound-wave span {
-    display: block;
-    width: 3px;
-    background: white;
-    border-radius: 2px;
-    animation: wave 0.8s ease-in-out infinite;
-  }
-  .sound-wave span:nth-child(1) { height: 8px; animation-delay: 0s; }
-  .sound-wave span:nth-child(2) { height: 14px; animation-delay: .1s; }
-  .sound-wave span:nth-child(3) { height: 20px; animation-delay: .2s; }
-  .sound-wave span:nth-child(4) { height: 14px; animation-delay: .3s; }
-  .sound-wave span:nth-child(5) { height: 8px; animation-delay: .4s; }
-
-  @keyframes wave {
-    0%,100% { transform: scaleY(1); }
-    50% { transform: scaleY(.3); }
-  }
-
-  .hidden { display: none !important; }
-
-  @media (max-width: 500px) {
-    #caller-grid { grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 10px; }
-    .caller-cell { border-radius: 8px; }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾 Animal Bingo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <header>
-  <h1>🐾 Animal Bingo</h1>
-  <p>Active Minds — Hayvan Bingo</p>
+  <h1 id="ui-title">🐾 Animal Bingo</h1>
+    <p>Active Minds — Animal Bingo</p>
 </header>
+
+<div class="language-picker">
+  <button onclick="changeLang('tr')" title="Türkçe">🇹🇷</button>
+  <button onclick="changeLang('en')" title="English">🇺🇸</button>
+  <button onclick="changeLang('nl')" title="Nederlands">🇳🇱</button>
+  <button onclick="changeLang('fr')" title="Français">🇫🇷</button>
+  <button onclick="changeLang('de')" title="Deutsch">🇩🇪</button>
+</div>
+
 
 <!-- START -->
 <div id="start-screen">
-  <div class="start-animals">
+    <div class="start-animals">
     <span>🐄</span><span>🐓</span><span>🐸</span><span>🐺</span><span>🦆</span>
     <span>🐍</span><span>🐴</span><span>🐑</span><span>🦜</span><span>🐝</span>
   </div>
 
-  <div class="start-info">
-    <h3>📋 Nasıl Oynanır?</h3>
+   <div class="start-info">
+    <h3 id="ui-how-to">📋 Nasıl Oynanır?</h3>
     <ul>
-      <li>Oyun başladığında her seferinde <strong>1 hayvan</strong> çıkar</li>
-      <li>🔊 butonuna basarak <strong>hayvan sesini</strong> duy</li>
-      <li>Fiziksel kartında o hayvanı bul ve üzerine <strong>tahta piyon koy</strong></li>
-      <li>✅ Tamam'a bas — <strong>sıradaki hayvan</strong> gelsin</li>
-      <li>Tüm 20 hayvan çekilene kadar devam et!</li>
+      <li id="ui-what-1">Oyun başladığında her seferinde listeden rastgele bir hayvan çıkar</li>
+      <li  id="ui-what-2"> Hayvan sesini dinle</li>
+      <li  id="ui-what-3">Fiziksel kartında o hayvanı bul ve üzerine tahta piyon koy</li>
+      <li  id="ui-what-4"> Sonraki .. tusuna bas, sıradaki hayvan gelsin</li>
+      <li id="ui-what-5">Tüm 20 hayvan çekilene kadar devam et!</li>
     </ul>
   </div>
 
-  <button class="btn-start" onclick="startGame()">🎲 Oyunu Başlat!</button>
+  <button class="btn-start" id="ui-start-btn" onclick="startGame()">Oyunu Baslat</button>
 </div>
 
 <!-- GAME -->
@@ -493,7 +56,7 @@
   <div id="spotlight-content">
     <div id="waiting-state">
       <div class="big">🎲</div>
-      <p>Hazır olduğunda başlat!</p>
+      <p id="ui-ready">Hazır olduğunda başlat!</p>
     </div>
   </div>
 
@@ -505,207 +68,18 @@
 </div>
 
   <!-- Caller card -->
-  <div class="section-title">📋 Bingo Caller Card — Tüm Hayvanlar</div>
+  <div class="section-title" id="ui-caller-title">📋 Bingo Caller Card — Tüm Hayvanlar</div>
   <div id="caller-grid"></div>
 </div>
 
 <!-- END -->
 <div id="end-screen">
   <div class="end-confetti">🎉🏆🎊</div>
-  <h2>Tebrikler!</h2>
-  <p>Tüm 20 hayvan çekildi!<br>Oyun bitti — kazanan kim? 🥳</p>
+  <h2 id="ui-end-1">Tebrikler!</h2>
+  <p  id="ui-end-2">Tüm 20 hayvan çekildi!<br>Oyun bitti — kazanan kim? 🥳</p>
   <button class="btn-restart" onclick="restartGame()">🔄 Tekrar Oyna</button>
 </div>
 
-<script>
-// ── DATA ──
-const ANIMALS = [
-  { id: 1,  name: 'Bee',       tr: 'Arı',        sound: 'bee',        img: 'images/bee.jpg' },
-  { id: 2,  name: 'Cat',       tr: 'Kedi',       sound: 'cat',        img: 'images/cat.jpg' },
-  { id: 3,  name: 'Rooster',   tr: 'Horoz',      sound: 'rooster',    img: 'images/rooster.jpg' },
-  { id: 4,  name: 'Cow',       tr: 'İnek',       sound: 'cow',        img: 'images/cow.jpg' },
-  { id: 5,  name: 'Dog',       tr: 'Köpek',      sound: 'dog',        img: 'images/dog.jpg' },
-  { id: 6,  name: 'Duck',      tr: 'Ördek',      sound: 'duck',       img: 'images/duck.jpg' },
-  { id: 7,  name: 'Eagle',     tr: 'Kartal',     sound: 'eagle',      img: 'images/eagle.jpg' },
-  { id: 8,  name: 'Elephant',  tr: 'Fil',        sound: 'elephant',   img: 'images/elephant.jpg' },
-  { id: 9,  name: 'Frog',      tr: 'Kurbağa',    sound: 'frog',       img: 'images/frog.jpg' },
-  { id: 10, name: 'Horse',     tr: 'At',         sound: 'horse',      img: 'images/horse.jpg' },
-  { id: 11, name: 'Lion',      tr: 'Aslan',      sound: 'lion',       img: 'images/lion.jpg' },
-  { id: 12, name: 'Monkey',    tr: 'Maymun',     sound: 'monkey',     img: 'images/monkey.jpg' },
-  { id: 13, name: 'Owl',       tr: 'Baykuş',     sound: 'owl',        img: 'images/owl.jpg' },
-  { id: 14, name: 'Parrot',    tr: 'Papağan',    sound: 'parrot',     img: 'images/parrot.jpg' },
-  { id: 15, name: 'Pig',       tr: 'Domuz',      sound: 'pig',        img: 'images/pig.jpg' },
-  { id: 16, name: 'Seagull',   tr: 'Martı',      sound: 'seagull',    img: 'images/seagull.jpg' },
-  { id: 17, name: 'Sheep',     tr: 'Koyun',      sound: 'sheep',      img: 'images/sheep.jpg' },
-  { id: 18, name: 'Snake',     tr: 'Yılan',      sound: 'snake',      img: 'images/snake.jpg' },
-  { id: 19, name: 'Wolf',      tr: 'Kurt',       sound: 'wolf',       img: 'images/wolf.jpg' },
-  { id: 20, name: 'Woodpecker', tr: 'Ağaçkakan',  sound: 'woodpecker', img: 'images/woodpecker.jpg' },
-];
-
-// ── Sound using Web Speech API (animal sounds via utterance) ──
-// We'll use a combo: try freesound URLs first, fallback to SpeechSynthesis
-const SOUND_URLS = {
-  bee:        'sounds/bee.mp3',
-  cat:        'sounds/cat.mp3',
-  rooster:    'sounds/rooster.mp3',
-  cow:        'sounds/cow.mp3',
-  dog:        'sounds/dog.mp3',
-  duck:       'sounds/duck.mp3',
-  eagle:      'sounds/eagle.mp3',
-  elephant:   'sounds/elephant.mp3',
-  frog:       'sounds/frog.mp3',
-  horse:      'sounds/horse.mp3',
-  lion:       'sounds/lion.mp3',
-  monkey:     'sounds/monkey.mp3',
-  owl:        'sounds/owl.mp3',
-  parrot:     'sounds/parrot.mp3',
-  pig:        'sounds/pig.mp3',
-  seagull:    'sounds/seagull.mp3',
-  sheep:      'sounds/sheep.mp3',
-  snake:      'sounds/snake.mp3',
-  wolf:       'sounds/wolf.mp3',
-  woodpecker: 'sounds/woodpecker.mp3',
-};
-
-// ── STATE ──
-let shuffled = [];
-let currentIndex = -1;
-let calledIds = new Set();
-
-
-function startGame() {
-  shuffled = shuffle([...ANIMALS]);
-  currentIndex = -1;
-  calledIds.clear();
-  let currentAudio = null;
-  show('game-screen');
-  hide('start-screen');
-
-  buildCallerGrid();
-  updateProgress();
-
-  // Show first draw button
-  showNextButton();
-}
-
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function buildCallerGrid() {
-  const grid = document.getElementById('caller-grid');
-  grid.innerHTML = '';
-  ANIMALS.forEach(a => {
-    const cell = document.createElement('div');
-    cell.className = 'caller-cell';
-    cell.id = 'cell-' + a.id;
-
-    //cell.innerHTML = `<span class="num">${a.id}</span>${a.emoji}<span class="cell-name">${a.tr}</span>`;
-
-    // Emoji yerine IMG etiketi koyduk
-    cell.innerHTML = `
-        <span class="num">${a.id}</span>
-        <img src="${a.img}" alt="${a.tr}">
-        <span class="cell-name">${a.tr}</span>
-    `;
-
-    grid.appendChild(cell);
-  });
-}
-
-
-
-
-// Global ses değişkeni yukarıda kalsın (durulması gereken yerler için)
-let currentAudio = null;
-
-function drawNext() {
-  // Eğer çalan bir ses varsa durdur (üst üste binmesin)
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-  }
-
-  currentIndex++;
-  
-  // Oyun bitti mi kontrolü
-  if (currentIndex >= shuffled.length) {
-    endGame();
-    return;
-  }
-
-  const animal = shuffled[currentIndex];
-  calledIds.add(animal.id);
-
-  // Ekrana resmi ve isimleri bas
-  document.getElementById('spotlight-content').innerHTML = `
-    <div id="spotlight-label">ŞU AN ÇEKİLEN HAYVAN</div>
-    <img src="${animal.img}" class="animal-img" alt="${animal.tr}" 
-         style="width:180px; height:180px; object-fit:contain; border-radius:15px; margin: 15px 0; border: 4px solid var(--red);">
-    <div id="spotlight-name" style="font-family:'Fredoka One'; font-size:2.8rem; color:var(--dark); line-height:1.1;">${animal.name}</div>
-    <div id="spotlight-name-tr" style="font-size:1.4rem; color:#9a7a6a; font-weight:700;">${animal.tr}</div>
-  `;
-
-  // Caller grid (kart) güncelleme
-  ANIMALS.forEach(a => {
-    const cell = document.getElementById('cell-' + a.id);
-    if (cell) {
-      cell.classList.remove('current');
-      if (a.id === animal.id) {
-        cell.classList.add('current');
-        cell.classList.add('called'); // Anında işaretle
-      } else if (calledIds.has(a.id)) {
-        cell.classList.add('called');
-      }
-    }
-  });
-
-  // Otomatik ses çalma
-  const soundPath = SOUND_URLS[animal.sound];
-  if (soundPath) {
-    currentAudio = new Audio(soundPath);
-    currentAudio.play().catch(error => {
-      console.error("Ses otomatik çalınamadı:", error);
-    });
-  }
-
-  updateProgress();
-  
-  // Buton metnini güncelle (İlk seferden sonra "Sıradaki" olsun)
-  document.getElementById('main-draw-btn').textContent = "🎲 Sıradaki Hayvanı Çek";
-}
-
-
-
-
-
-
-
-function updateProgress() {
-  const done = calledIds.size;
-  const total = ANIMALS.length;
-  document.getElementById('progress-fill').style.width = (done / total * 100) + '%';
-  document.getElementById('progress-label').textContent = `${done} / ${total} hayvan çekildi`;
-}
-
-
-function endGame() {
-  hide('game-screen');
-  show('end-screen');
-}
-
-function restartGame() {
-  hide('end-screen');
-  hide('game-screen');
-  show('start-screen');
-}
-
-function show(id) { document.getElementById(id).style.display = 'block'; }
-function hide(id) { document.getElementById(id).style.display = 'none'; }
-</script>
+<script lang="javascript/text" src="script.js"></script>
 </body>
 </html>
