@@ -47,13 +47,101 @@ const SOUND_URLS = {
   woodpecker: 'sounds/woodpecker.mp3',
 };
 
+ 
+
 const UI_TEXTS = {
-  en: { title: "Animal Bingo", start: "Start Game!", next: "Draw Next Animal", restart: "Play Again", winner: "Winner!", progress: "collected", current: "CURRENT ANIMAL" },
-  tr: { title: "Hayvan Bingo", start: "Oyunu Başlat!", next: "Sıradaki Hayvanı Çek", restart: "Tekrar Oyna", winner: "Tebrikler!", progress: "çekildi", current: "ŞU AN ÇEKİLEN HAYVAN" },
-  nl: { title: "Dieren Bingo", start: "Start Spel!", next: "Volgende Dier", restart: "Opnieuw Spelen", winner: "Gewonnen!", progress: "verzameld", current: "HUIDIG DIER" },
-  fr: { title: "Bingo des Animaux", start: "Jouer!", next: "Animal Suivant", restart: "Rejouer", winner: "Gagné!", progress: "collectés", current: "ANIMAL ACTUEL" },
-  de: { title: "Tier-Bingo", start: "Spiel Starten!", next: "Nächstes Tier", restart: "Noch einmal", winner: "Gewonnen!", progress: "gesammelt", current: "AKTUELLES TIER" }
+  tr: {
+    title: "🐾 Hayvan Bingo",
+    howto: "📋 Nasıl Oynanır?",
+    what1: "Oyun başladığında her seferinde listeden rastgele bir hayvan çıkar",
+    what2: "Hayvan sesini dinle",
+    what3: "Fiziksel kartında o hayvanı bul ve üzerine tahta piyon koy",
+    what4: "Sonraki .. tusuna bas, sıradaki hayvan gelsin",
+    what5: "Tüm 20 hayvan çekilene kadar devam et!",
+    startbtn: "🎲 Oyunu Başlat!",
+    maindrawbtn: "🎲 Sıradaki Hayvanı Çek",
+    progresslabel: "hayvan çekildi",
+    ready: "Hazır olduğunda başlat!",
+    currentLabel: "ŞU AN ÇEKİLEN HAYVAN",
+    callertitle: "📋 Bingo Caller Card — Tüm Hayvanlar",
+    end1: "Tebrikler!",
+    end2: "Tüm 20 hayvan çekildi!<br>Oyun bitti — kazanan kim? 🥳",
+    btnrestart: "🔄 Tekrar Oyna"
+  },
+  en: {
+    title: "🐾 Animal Bingo",
+    howto: "📋 How to Play?",
+    what1: "Each time the game starts, a random animal appears from the list",
+    what2: "Listen to the animal sound",
+    what3: "Find that animal on your physical card and place a wooden marker",
+    what4: "Press the Next button for the next animal to appear",
+    what5: "Continue until all 20 animals are drawn!",
+    startbtn: "🎲 Start Game!",
+    maindrawbtn: "🎲 Draw Next Animal",
+    progresslabel: "animals drawn",
+    ready: "Start when you are ready!",
+    currentLabel: "CURRENT ANIMAL",
+    callertitle: "📋 Bingo Caller Card — All Animals",
+    end1: "Congratulations!",
+    end2: "All 20 animals drawn!<br>Game over — who is the winner? 🥳",
+    btnrestart: "🔄 Play Again"
+  },
+  nl: {
+    title: "🐾 Dieren Bingo",
+    howto: "📋 Hoe te spelen?",
+    what1: "Elke keer dat het spel begint, verschijnt er een willekeurig dier uit de lijst",
+    what2: "Luister naar het dierengeluid",
+    what3: "Vind dat dier op je fysieke kaart en plaats een houten pion",
+    what4: "Druk op de knop Volgende voor het volgende dier",
+    what5: "Ga door totdat alle 20 dieren zijn getrokken!",
+    startbtn: "🎲 Start Spel!",
+    maindrawbtn: "🎲 Volgende Dier Trekken",
+    progresslabel: "dieren getrokken",
+    ready: "Start wanneer je klaar bent!",
+    currentLabel: "HUIDIG DIER",
+    callertitle: "📋 Bingo Caller Card — Alle Dieren",
+    end1: "Gefeliciteerd!",
+    end2: "Alle 20 dieren zijn getrokken!<br>Spel voorbij — wie is de winnaar? 🥳",
+    btnrestart: "🔄 Opnieuw Spelen"
+  },
+  fr: {
+    title: "🐾 Bingo des Animaux",
+    howto: "📋 Comment jouer ?",
+    what1: "Chaque fois que le jeu commence, un animal aléatoire apparaît",
+    what2: "Écoutez le cri de l'animal",
+    what3: "Trouvez cet animal sur votre carte et placez un jeton en bois",
+    what4: "Appuyez sur le bouton Suivant pour l'animal suivant",
+    what5: "Continuez jusqu'à ce que les 20 animaux soient tirés !",
+    startbtn: "🎲 Commencer le jeu !",
+    maindrawbtn: "🎲 Tirer l'animal suivant",
+    progresslabel: "animaux tirés",
+    ready: "Commencez quand vous êtes prêt !",
+    currentLabel: "ANIMAL ACTUEL",
+    callertitle: "📋 Carte d'appel du Bingo — Tous les animaux",
+    end1: "Félicitations !",
+    end2: "Les 20 animaux ont été tirés !<br>Fin du jeu — qui est le gagnant ? 🥳",
+    btnrestart: "🔄 Rejouer"
+  },
+  de: {
+    title: "🐾 Tier-Bingo",
+    howto: "📋 Wie man spielt?",
+    what1: "Jedes Mal, wenn das Spiel beginnt, erscheint ein zufälliges Tier",
+    what2: "Hören Sie sich das Tiergeräusch an",
+    what3: "Finden Sie das Tier auf Ihrer Karte ve legen Sie einen Holzmarker ab",
+    what4: "Drücken Sie die Weiter-Taste für das nächste Tier",
+    what5: "Fahren Sie fort, bis alle 20 Tiere gezogen sind!",
+    startbtn: "🎲 Spiel starten!",
+    maindrawbtn: "🎲 Nächstes Tier ziehen",
+    progresslabel: "Tiere gezogen",
+    ready: "Starten Sie, wenn Sie bereit sind!",
+    currentLabel: "AKTUELLES TIER",
+    callertitle: "📋 Bingo-Anruferkarte — Alle Tiere",
+    end1: "Herzlichen Glückwunsch!",
+    end2: "Alle 20 Tiere wurden gezogen!<br>Spiel vorbei — wer hat gewonnen? 🥳",
+    btnrestart: "🔄 Noch einmal spielen"
+  }
 };
+
 
 
 let currentLang = navigator.language.split('-')[0]; 
@@ -66,23 +154,40 @@ let currentIndex = -1;
 let calledIds = new Set();
 
 
-
 function applyLanguage() {
-  const texts = UI_TEXTS[currentLang];
-  document.getElementById('ui-title').textContent = texts.title;
-  if(document.getElementById('ui-start-btn')) document.getElementById('ui-start-btn').textContent = texts.start;
-  if(document.getElementById('main-draw-btn')) document.getElementById('main-draw-btn').textContent = texts.next;
+ 
+  const currentTranslations = UI_TEXTS[currentLang];
+
+  // Sözlükteki her bir anahtar (key) için döngü başlatıyoruz
+  Object.keys(currentTranslations).forEach(key => {
+    // ID'yi oluşturuyoruz (Örn: ui-title, ui-how-to)
+    // Eğer bazı butonların başında 'ui-' yoksa (örneğin 'main-draw-btn'), 
+    // onu kontrol eden küçük bir mantık ekleyebiliriz.
+    const elementId = 'ui-' + key;
+    const element = document.getElementById(elementId);
+
+    if (element) {
+
+      // Eğer metin HTML (br etiketi vs) içeriyorsa innerHTML, içermiyorsa textContent
+      if (currentTranslations[key].includes('<')) {
+        element.innerHTML = currentTranslations[key];
+      } else {
+        element.textContent = currentTranslations[key];
+      }
+    }
+  });
+
+ 
+  updateProgress();
 }
 
 function changeLang(lang) {
   currentLang = lang;
+  
   applyLanguage();
+  
   buildCallerGrid();  
 }
-
-window.onload = () => {
-  applyLanguage();
-};
 
 
 function startGame() {
@@ -90,8 +195,10 @@ function startGame() {
   currentIndex = -1;
   calledIds.clear();
   currentAudio = null;  
-  
+
+
   applyLanguage();  
+
   show('game-screen');
   hide('start-screen');
 
@@ -155,12 +262,12 @@ function drawNext() {
   const animalName = animal.translations[currentLang] || animal.translations['en']; 
   calledIds.add(animal.id);
 
-  document.getElementById('spotlight-content').innerHTML = `
-    <div id="spotlight-label">${UI_TEXTS[currentLang].current}</div>
-    <img src="${animal.img}" class="animal-img" style="width:180px; height:180px; object-fit:contain; border-radius:15px; margin: 15px 0; border: 4px solid var(--red);">
-    <div id="spotlight-name" style="font-family:'Fredoka One'; font-size:2.8rem; color:var(--dark);">${animalName}</div>
-  `;
 
+  document.getElementById('spotlight-content').innerHTML = `
+  <div id="spotlight-label">${UI_TEXTS[currentLang].currentLabel}</div>
+  <img src="${animal.img}" class="animal-img" style="width:180px; height:180px; object-fit:contain; border-radius:15px; margin: 15px 0; border: 4px solid var(--red);">
+  <div id="spotlight-name" style="font-family:'Fredoka One'; font-size:2.8rem; color:var(--dark);">${animalName}</div>
+`;
 
   // Caller grid (kart) güncelleme
   ANIMALS.forEach(a => {
@@ -190,19 +297,29 @@ function drawNext() {
   //document.getElementById('main-draw-btn').textContent = "🎲 Sıradaki Hayvanı Çek";
 
   const texts = UI_TEXTS[currentLang];
-  document.getElementById('main-draw-btn').textContent = texts.next;
+  document.getElementById('main-draw-btn').textContent = texts.nextBtn;
 
 }
 
 
 function updateProgress() {
-  const done = calledIds.size;
-  const total = ANIMALS.length;
-  const progressText = UI_TEXTS[currentLang].progress; 
-  
-  document.getElementById('progress-fill').style.width = (done / total * 100) + '%';
-  document.getElementById('progress-label').textContent = `${done} / ${total} ${progressText}`;
+    const done = calledIds.size;
+    const total = ANIMALS.length;
+    const fillElem = document.getElementById('progressfill');  
+    const labelElem = document.getElementById('ui-progresslabel');  
+    
+    if (fillElem) {
+        fillElem.style.width = (done / total * 100) + '%';
+    }
+
+    
+    if (labelElem) {
+        const text = UI_TEXTS[currentLang].progresslabel;
+        labelElem.textContent = `${done} / ${total} ${text}`;
+    }
 }
+
+
 
 function endGame() {
   hide('game-screen');
@@ -217,3 +334,7 @@ function restartGame() {
 
 function show(id) { document.getElementById(id).style.display = 'block'; }
 function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+window.onload = () => {
+  applyLanguage();
+};
