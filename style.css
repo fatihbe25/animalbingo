@@ -417,37 +417,52 @@
 
   .language-picker {
     position: fixed;
-    top: 15px;
-    right: 15px;
+    top: 20px;
+    right: 20px;
     z-index: 1000;
     display: flex;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 8px;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
     border-radius: 50px;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    backdrop-filter: blur(5px); /* Arka planı hafif bulanıklaştırır */
 }
 
 .language-picker button {
-    background: none;
-    border: 2px solid transparent;
-    font-size: 1.5rem; /* Bayrak boyutu */
+    background: white;
+    border: 2px solid #eee;
+    font-size: 1.6rem; /* Bayrak boyutu */
     cursor: pointer;
-    transition: all 0.2s ease;
-    padding: 0;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    transition: all 0.2s ease;
+    padding: 0;
 }
 
 .language-picker button:hover {
-    transform: scale(1.2);
-    background: rgba(192, 57, 43, 0.1); /* Hafif kırmızı vurgu */
-    border-color: var(--red);
+    transform: scale(1.15);
+    border-color: var(--red); /* Temandaki kırmızı rengi kullanır */
+    box-shadow: 0 4px 8px rgba(192, 57, 43, 0.2);
+}
+
+/* Mobilde çok yer kaplamaması için boyutu biraz küçültebiliriz */
+@media (max-width: 600px) {
+    .language-picker {
+        top: 10px;
+        right: 10px;
+        padding: 6px;
+        gap: 5px;
+    }
+    .language-picker button {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
 }
 
 
